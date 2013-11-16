@@ -1,4 +1,4 @@
 all: librupy.so
 
 librupy.so: librupy.c
-	gcc -fPIC `python2.6-config --cflags --libs` -Wl,-undefined,dynamic_lookup -lpthread -ldl -lm -lrt -lcrypt -I/usr/lib/ruby/1.8/i486-linux -lruby1.8 -shared -o $@ $<
+	gcc -fPIC `python2.6-config --cflags --libs` -I/usr/lib/ruby/1.8/i486-linux -lruby1.8 -shared -o $@ $<
