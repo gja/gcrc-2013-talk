@@ -1,8 +1,7 @@
 import sys
 import os
-
 sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)))
-
 import librupy
 
-librupy.factorial(4)
+librupy.require("factorial")
+print librupy.eval("factorial(4)")

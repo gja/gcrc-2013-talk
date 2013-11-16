@@ -1,18 +1,15 @@
 #include "Python.h"
-
-void rupy_start_ruby_vm();
-void rupy_require_file(const char *file);
-long rupy_eval(const char *string);
+#include "ruby.h"
 
 static PyObject *python_rupy_require(PyObject *self, PyObject *file)
 {
-    rupy_require_file(PyString_AsString(file));
+    rb_require(PyString_AsString(file));
     return Py_True;
 }
 
 static PyObject *python_rupy_eval(PyObject *self, PyObject *string)
 {
-    return PyInt_FromLong(rupy_eval(PyString_AsString(string)));
+    return PyInt_FromLong(FIX2INT(rb_eval_string(PyString_AsString(string))));
 }
 
 static PyMethodDef module_functions[] = {
@@ -23,6 +20,7 @@ static PyMethodDef module_functions[] = {
 
 void initlibrupy(void)
 {
-    rupy_start_ruby_vm();
+    ruby_init();
+    rb_eval_string("$: << '.'");
     Py_InitModule3("librupy", module_functions, "A ruby module for python.");
 }
