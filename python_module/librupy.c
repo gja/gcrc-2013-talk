@@ -9,7 +9,12 @@ static PyObject *python_rupy_require(PyObject *self, PyObject *file)
 
 static PyObject *python_rupy_eval(PyObject *self, PyObject *string)
 {
-    return PyInt_FromLong(FIX2INT(rb_eval_string(PyString_AsString(string))));
+    VALUE val = rb_eval_string(PyString_AsString(string));
+    switch(TYPE(val)) {
+    case T_FIXNUM: return PyInt_FromLong(FIX2INT(val));
+    case T_STRING: return PyString_FromString(StringValuePtr(val));
+    default: return Py_None; // Can handle these cases later
+    }
 }
 
 static PyMethodDef module_functions[] = {
